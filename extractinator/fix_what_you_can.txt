@@ -1,0 +1,13 @@
+UPDATE PRODUCT_DETAILS
+SET id_category_primary = 0
+WHERE rowid IN (SELECT rowid FROM pragma_foreign_key_check('PRODUCT_DETAILS') WHERE fkid = 3);
+
+UPDATE PRODUCT_DETAILS
+SET id_category_parent_major = 0
+WHERE rowid IN (SELECT rowid FROM pragma_foreign_key_check('PRODUCT_DETAILS') WHERE fkid = 2);
+
+UPDATE PRODUCT_DETAILS
+SET id_category_parent_minor = 0
+WHERE rowid IN (SELECT rowid FROM pragma_foreign_key_check('PRODUCT_DETAILS') WHERE fkid = 1);
+
+PRAGMA foreign_key_check;

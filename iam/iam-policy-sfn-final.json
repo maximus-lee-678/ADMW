@@ -1,0 +1,42 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+                "logs:PutLogEvents",
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups"
+            ],
+            "Resource": ["*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+            "Resource": ["arn:aws:logs:ap-southeast-1:329599651193:log-group:/aws/vendedlogs/states/sfn-final-Logs:*"]
+        },
+        {
+            "Action": ["lambda:InvokeFunction"],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-error-handler:$LATEST",
+                "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-compress-and-store-file:$LATEST"
+            ]
+        },
+        {
+            "Action": ["glue:StartJobRun", "glue:GetJobRun", "glue:GetJobRuns", "glue:BatchStopJobRun"],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:glue:ap-southeast-1:329599651193:job/gjb-load-preliminary-to-final",
+                "arn:aws:glue:ap-southeast-1:329599651193:job/gjb-generate-reconciliation-final"
+            ]
+        }
+    ]
+}

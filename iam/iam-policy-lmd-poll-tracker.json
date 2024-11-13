@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+            "Resource": ["arn:aws:logs:ap-southeast-1:329599651193:log-group:/aws/lambda/lmd-poll-tracker:*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["glue:GetConnection"],
+            "Resource": ["arn:aws:glue:ap-southeast-1:329599651193:catalog", "arn:aws:glue:ap-southeast-1:329599651193:connection/gco-db-connector"]
+        }
+    ]
+}

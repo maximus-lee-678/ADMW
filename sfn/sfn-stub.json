@@ -1,0 +1,66 @@
+{
+    "Comment": "it is so tiny",
+    "StartAt": "SFN TEST MODE",
+    "States": {
+        "SFN TEST MODE": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "pipeline_stage": "2",
+                    "status": "SFN TEST MODE"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "End": true,
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "CATCH ALL": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-error-handler:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "pipeline_stage": "2",
+                    "step_and_resource": "-",
+                    "error_details.$": "$.error_details"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "End": true
+        }
+    }
+}

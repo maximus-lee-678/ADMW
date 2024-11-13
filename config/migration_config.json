@@ -1,0 +1,274 @@
+{
+    "schema_name": "db_supermarket",
+    "prelim_table_prefix": "PRE_",
+    "prelim_column_prefix": "pre_",
+    "load_order": [
+        "CUSTOMER_DETAILS",
+        "CUSTOMER_PURCHASE_INSTANCE",
+        "STAFF_DETAILS",
+        "PRODUCT_BRAND",
+        "PRODUCT_CATEGORY",
+        "PRODUCT_COUNTRY",
+        "PRODUCT_DETAILS",
+        "PRODUCT_SECONDARY_CATEGORY",
+        "CUSTOMER_PURCHASE_INSTANCE_ITEMS",
+        "CUSTOMER_CART_ITEMS"
+    ],
+    "table_executes_which_flow": {
+        "CUSTOMER_DETAILS": ["CUSTOMER_DETAILS"],
+        "CUSTOMER_PURCHASE_INSTANCE": ["CUSTOMER_PURCHASE_INSTANCE"],
+        "STAFF_DETAILS": ["STAFF_DETAILS"],
+        "PRODUCT_BRAND": ["PRODUCT_BRAND"],
+        "PRODUCT_CATEGORY": ["PRODUCT_CATEGORY"],
+        "PRODUCT_COUNTRY": ["PRODUCT_COUNTRY"],
+        "PRODUCT_DETAILS": ["PRODUCT_DETAILS", "PRODUCT_SECONDARY_CATEGORY"],
+        "PRODUCT_SECONDARY_CATEGORY": [],
+        "CUSTOMER_PURCHASE_INSTANCE_ITEMS": ["CUSTOMER_PURCHASE_INSTANCE_ITEMS"],
+        "CUSTOMER_CART_ITEMS": ["CUSTOMER_CART_ITEMS"]
+    },
+    "tables": {
+        "CUSTOMER_DETAILS": {
+            "prelim_name": "PRE_CUSTOMER_DETAILS",
+            "final_name": "CUSTOMER_DETAILS",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["first_name", "string", "pre_first_name", "string"],
+                ["last_name", "string", "pre_last_name", "string"],
+                ["email", "string", "pre_email", "string"],
+                ["password", "string", "pre_password", "string"],
+                ["dob", "string", "pre_dob", "string"],
+                ["telephone", "string", "pre_telephone", "string"],
+                ["member_card_sn", "string", "pre_member_card_sn", "string"],
+                ["points", "string", "pre_points", "string"],
+                ["created_at", "string", "pre_created_at", "string"],
+                ["modified_at", "string", "pre_modified_at", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_first_name", "string", "first_name", "string"],
+                ["pre_last_name", "string", "last_name", "string"],
+                ["pre_email", "string", "email", "string"],
+                ["pre_password", "string", "password", "string"],
+                ["pre_dob", "date", "dob", "date"],
+                ["pre_telephone", "string", "telephone", "string"],
+                ["pre_member_card_sn", "string", "member_card_sn", "string"],
+                ["pre_points", "decimal", "points", "decimal"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"],
+                ["pre_modified_at", "timestamp", "modified_at", "timestamp"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "CUSTOMER_PURCHASE_INSTANCE": {
+            "prelim_name": "PRE_CUSTOMER_PURCHASE_INSTANCE",
+            "final_name": "CUSTOMER_PURCHASE_INSTANCE",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["id_cust", "string", "pre_id_cust", "string"],
+                ["points_gained", "string", "pre_points_gained", "string"],
+                ["points_used", "string", "pre_points_used", "string"],
+                ["created_at", "string", "pre_created_at", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_id_cust", "int", "id_cust", "int"],
+                ["pre_points_gained", "decimal", "points_gained", "decimal"],
+                ["pre_points_used", "decimal", "points_used", "decimal"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "STAFF_DETAILS": {
+            "prelim_name": "PRE_STAFF_DETAILS",
+            "final_name": "STAFF_DETAILS",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["first_name", "string", "pre_first_name", "string"],
+                ["last_name", "string", "pre_last_name", "string"],
+                ["email", "string", "pre_email", "string"],
+                ["password", "string", "pre_password", "string"],
+                ["telephone", "string", "pre_telephone", "string"],
+                ["created_at", "string", "pre_created_at", "string"],
+                ["modified_at", "string", "pre_modified_at", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_first_name", "string", "first_name", "string"],
+                ["pre_last_name", "string", "last_name", "string"],
+                ["pre_email", "string", "email", "string"],
+                ["pre_password", "string", "password", "string"],
+                ["pre_telephone", "string", "telephone", "string"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"],
+                ["pre_modified_at", "timestamp", "modified_at", "timestamp"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "PRODUCT_BRAND": {
+            "prelim_name": "PRE_PRODUCT_BRAND",
+            "final_name": "PRODUCT_BRAND",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["name", "string", "pre_name", "string"],
+                ["active", "string", "pre_active", "string"],
+                ["created_at", "string", "pre_created_at", "string"],
+                ["modified_at", "string", "pre_modified_at", "string"],
+                ["modified_by", "string", "pre_modified_by", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_name", "string", "name", "string"],
+                ["pre_active", "boolean", "active", "boolean"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"],
+                ["pre_modified_at", "timestamp", "modified_at", "timestamp"],
+                ["pre_modified_by", "int", "modified_by", "int"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "PRODUCT_CATEGORY": {
+            "prelim_name": "PRE_PRODUCT_CATEGORY",
+            "final_name": "PRODUCT_CATEGORY",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["name", "string", "pre_name", "string"],
+                ["image_url", "string", "pre_image_url", "string"],
+                ["active", "string", "pre_active", "string"],
+                ["created_at", "string", "pre_created_at", "string"],
+                ["modified_at", "string", "pre_modified_at", "string"],
+                ["modified_by", "string", "pre_modified_by", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_name", "string", "name", "string"],
+                ["pre_image_url", "string", "image_url", "string"],
+                ["pre_active", "boolean", "active", "boolean"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"],
+                ["pre_modified_at", "timestamp", "modified_at", "timestamp"],
+                ["pre_modified_by", "int", "modified_by", "int"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "PRODUCT_COUNTRY": {
+            "prelim_name": "PRE_PRODUCT_COUNTRY",
+            "final_name": "PRODUCT_COUNTRY",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["name", "string", "pre_name", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_name", "string", "name", "string"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "PRODUCT_DETAILS": {
+            "prelim_name": "PRE_PRODUCT_DETAILS",
+            "final_name": "PRODUCT_DETAILS",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["id_brand", "string", "pre_id_brand", "string"],
+                ["id_country", "string", "pre_id_country", "string"],
+                ["id_category_primary", "string", "pre_id_category_primary", "string"],
+                ["id_category_parent_major", "string", "pre_id_category_parent_major", "string"],
+                ["id_category_parent_minor", "string", "pre_id_category_parent_minor", "string"],
+                ["name", "string", "pre_name", "string"],
+                ["price", "string", "pre_price", "string"],
+                ["display_unit", "string", "pre_display_unit", "string"],
+                ["description", "string", "pre_description", "string"],
+                ["key_information", "string", "pre_key_information", "string"],
+                ["rating_1", "string", "pre_rating_1", "string"],
+                ["rating_2", "string", "pre_rating_2", "string"],
+                ["rating_3", "string", "pre_rating_3", "string"],
+                ["rating_4", "string", "pre_rating_4", "string"],
+                ["rating_5", "string", "pre_rating_5", "string"],
+                ["image_url", "string", "pre_image_url", "string"],
+                ["active", "string", "pre_active", "string"],
+                ["created_at", "string", "pre_created_at", "string"],
+                ["modified_at", "string", "pre_modified_at", "string"],
+                ["modified_by", "string", "pre_modified_by", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_id_brand", "int", "id_brand", "int"],
+                ["pre_id_country", "int", "id_country", "int"],
+                ["pre_id_category_primary", "int", "id_category_primary", "int"],
+                ["pre_id_category_parent_major", "int", "id_category_parent_major", "int"],
+                ["pre_id_category_parent_minor", "int", "id_category_parent_minor", "int"],
+                ["pre_name", "string", "name", "string"],
+                ["pre_price", "decimal", "price", "decimal"],
+                ["pre_display_unit", "string", "display_unit", "string"],
+                ["pre_description", "string", "description", "string"],
+                ["pre_key_information", "string", "key_information", "string"],
+                ["pre_rating_1", "int", "rating_1", "int"],
+                ["pre_rating_2", "int", "rating_2", "int"],
+                ["pre_rating_3", "int", "rating_3", "int"],
+                ["pre_rating_4", "int", "rating_4", "int"],
+                ["pre_rating_5", "int", "rating_5", "int"],
+                ["pre_image_url", "string", "image_url", "string"],
+                ["pre_active", "boolean", "active", "boolean"],
+                ["pre_created_at", "timestamp", "created_at", "timestamp"],
+                ["pre_modified_at", "timestamp", "modified_at", "timestamp"],
+                ["pre_modified_by", "int", "modified_by", "int"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "PRODUCT_SECONDARY_CATEGORY": {
+            "prelim_name": "PRE_PRODUCT_SECONDARY_CATEGORY",
+            "final_name": "PRODUCT_SECONDARY_CATEGORY",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["id_category_secondary", "string", "pre_id_category_secondary", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_id_prod", "int", "id_prod", "int"],
+                ["pre_id_cat", "int", "id_cat", "int"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": true
+        },
+        "CUSTOMER_PURCHASE_INSTANCE_ITEMS": {
+            "prelim_name": "PRE_CUSTOMER_PURCHASE_INSTANCE_ITEMS",
+            "final_name": "CUSTOMER_PURCHASE_INSTANCE_ITEMS",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["id_inst", "string", "pre_id_inst", "string"],
+                ["id_prod", "string", "pre_id_prod", "string"],
+                ["quantity", "string", "pre_quantity", "string"],
+                ["price", "string", "pre_price", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_id_inst", "int", "id_inst", "int"],
+                ["pre_id_prod", "int", "id_prod", "int"],
+                ["pre_quantity", "int", "quantity", "int"],
+                ["pre_price", "decimal", "price", "decimal"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        },
+        "CUSTOMER_CART_ITEMS": {
+            "prelim_name": "PRE_CUSTOMER_CART_ITEMS",
+            "final_name": "CUSTOMER_CART_ITEMS",
+            "mappings_prelim": [
+                ["id", "string", "pre_id", "string"],
+                ["id_cust", "string", "pre_id_cust", "string"],
+                ["id_prod", "string", "pre_id_prod", "string"],
+                ["quantity", "string", "pre_quantity", "string"]
+            ],
+            "mappings_final": [
+                ["pre_id", "int", "id", "int"],
+                ["pre_id_cust", "int", "id_cust", "int"],
+                ["pre_id_prod", "int", "id_prod", "int"],
+                ["pre_quantity", "int", "quantity", "int"]
+            ],
+            "primary_keys": ["id"],
+            "pre_exclude_from_hash": false
+        }
+    }
+}

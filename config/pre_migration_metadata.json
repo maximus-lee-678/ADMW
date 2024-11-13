@@ -1,0 +1,13 @@
+{
+    "schema_name": "db_supermarket",
+    "prelim_table_prefix": "PRE_",
+    "prelim_column_prefix": "pre_",
+    "input_ddl_file_name": "input.sql",
+    "to_create_prelim_ddl_file_name": "dbmw_pre_mysql.sql",
+    "to_create_final_ddl_file_name": "dbmw_final_mysql.sql",
+    "to_create_metadata_file_name": "migration_config.json",
+    "to_create_extractinator_mappings_file_name": "extractinator_mappings.json",
+    "to_create_transform_template_file_name": "_glue_dependencies/admw_glue_transforms.py",
+    "to_create_prelim_hash_template_file_name": "_glue_dependencies/admw_glue_prelim_hashing.py",
+    "to_create_final_hash_template_file_name": "_glue_dependencies/admw_glue_final_hashing.py"
+}

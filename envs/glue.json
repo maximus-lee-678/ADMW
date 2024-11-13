@@ -1,0 +1,8 @@
+{
+    "glue_connector_name": "gco-db-connector",
+    "bucket_name_config": "s3-admw-configuration",
+    "bucket_name_processing": "s3-admw-data-processing",
+    "bucket_name_recon": "s3-admw-reconciliation",
+    "bucket_name_hashes": "s3-admw-hash-tables",
+    "object_path_cfg": "migration_config.json"
+}

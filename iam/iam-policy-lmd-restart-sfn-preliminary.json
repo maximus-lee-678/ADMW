@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+            "Resource": ["arn:aws:logs:ap-southeast-1:329599651193:log-group:/aws/lambda/lmd-restart-sfn-preliminary:*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["s3:ListBucket"],
+            "Resource": ["arn:aws:s3:::*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+            "Resource": ["arn:aws:s3:::s3-admw-configuration/*", "arn:aws:s3:::s3-admw-data-processing/*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["states:ListStateMachines"],
+            "Resource": ["arn:aws:states:ap-southeast-1:329599651193:*"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["states:StartExecution", "states:DescribeExecution", "states:StopExecution", "states:GetExecutionHistory"],
+            "Resource": ["arn:aws:states:ap-southeast-1:329599651193:stateMachine:sfn-preliminary"]
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["glue:GetConnection"],
+            "Resource": ["arn:aws:glue:ap-southeast-1:329599651193:catalog", "arn:aws:glue:ap-southeast-1:329599651193:connection/gco-db-connector"]
+        }
+    ]
+}

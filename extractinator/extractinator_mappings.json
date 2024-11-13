@@ -1,0 +1,32 @@
+{
+    "CUSTOMER_DETAILS": ["id", "first_name", "last_name", "email", "password", "dob", "telephone", "member_card_sn", "points", "created_at", "modified_at"],
+    "CUSTOMER_PURCHASE_INSTANCE": ["id", "id_cust", "points_gained", "points_used", "created_at"],
+    "STAFF_DETAILS": ["id", "first_name", "last_name", "email", "password", "telephone", "created_at", "modified_at"],
+    "PRODUCT_BRAND": ["id", "name", "active", "created_at", "modified_at", "modified_by"],
+    "PRODUCT_CATEGORY": ["id", "name", "image_url", "active"],
+    "PRODUCT_COUNTRY": ["id", "name"],
+    "PRODUCT_DETAILS": [
+        "id",
+        "id_brand",
+        "id_country",
+        "id_category_primary",
+        "id_category_parent_major",
+        "name",
+        "display_unit",
+        "description",
+        "key_information",
+        "rating_1",
+        "rating_2",
+        "rating_3",
+        "rating_4",
+        "rating_5",
+        "image_url",
+        "active",
+        "created_at",
+        "modified_at",
+        "modified_by"
+    ],
+    "PRODUCT_SECONDARY_CATEGORY": [],
+    "CUSTOMER_PURCHASE_INSTANCE_ITEMS": ["id", "id_inst", "id_prod", "quantity"],
+    "CUSTOMER_CART_ITEMS": ["id", "id_cust", "id_prod", "quantity"]
+}

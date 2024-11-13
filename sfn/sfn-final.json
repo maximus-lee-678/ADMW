@@ -1,0 +1,259 @@
+{
+    "Comment": "Final Data Migration pipeline.",
+    "StartAt": "STAGE 2 STARTED",
+    "States": {
+        "STAGE 2 STARTED": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2",
+                    "status": "STAGE 2 STARTED"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Next": "Copy from Preliminary to Final",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "Copy from Preliminary to Final": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::glue:startJobRun.sync",
+            "Parameters": {
+                "JobName": "gjb-load-preliminary-to-final",
+                "Arguments": {
+                    "--bucket_name.$": "$.bucket_name",
+                    "--key_name.$": "$.key_name",
+                    "--file_name.$": "$.file_name",
+                    "--table_name.$": "$.table_name",
+                    "--file_datetime.$": "$.file_datetime",
+                    "--archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "--pipeline_stage": "2"
+                }
+            },
+            "Next": "STAGE 2 DATA LOADED",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "STAGE 2 DATA LOADED": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2",
+                    "status": "STAGE 2 DATA LOADED"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Next": "Generate Reconciliation Report",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "Generate Reconciliation Report": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::glue:startJobRun.sync",
+            "Parameters": {
+                "JobName": "gjb-generate-reconciliation-final",
+                "Arguments": {
+                    "--bucket_name.$": "$.bucket_name",
+                    "--key_name.$": "$.key_name",
+                    "--file_name.$": "$.file_name",
+                    "--table_name.$": "$.table_name",
+                    "--archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "--file_datetime.$": "$.file_datetime",
+                    "--pipeline_stage": "2"
+                }
+            },
+            "Next": "STAGE 2 REPORT GENERATED",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "STAGE 2 REPORT GENERATED": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2",
+                    "status": "STAGE 2 REPORT GENERATED"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Next": "Data File Compression",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "Data File Compression": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-compress-and-store-file:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "Next": "STAGE 2 COMPLETED",
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "STAGE 2 COMPLETED": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-update-file-migration-phase:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2",
+                    "status": "STAGE 2 COMPLETED"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "End": true,
+            "Catch": [
+                {
+                    "ErrorEquals": ["States.ALL"],
+                    "Comment": "On any error, GOTO CATCH ALL step.",
+                    "Next": "CATCH ALL",
+                    "ResultPath": "$.error_details"
+                }
+            ],
+            "ResultPath": null
+        },
+        "CATCH ALL": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+                "FunctionName": "arn:aws:lambda:ap-southeast-1:329599651193:function:lmd-error-handler:$LATEST",
+                "Payload": {
+                    "bucket_name.$": "$.bucket_name",
+                    "key_name.$": "$.key_name",
+                    "file_name.$": "$.file_name",
+                    "table_name.$": "$.table_name",
+                    "file_datetime.$": "$.file_datetime",
+                    "archive_data_file_once_done.$": "$.archive_data_file_once_done",
+                    "pipeline_stage": "2",
+                    "step_and_resource": "-",
+                    "error_details.$": "$.error_details"
+                }
+            },
+            "Retry": [
+                {
+                    "ErrorEquals": ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"],
+                    "IntervalSeconds": 1,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                }
+            ],
+            "End": true
+        }
+    }
+}
