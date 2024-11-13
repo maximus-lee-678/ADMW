@@ -1,0 +1,6 @@
+*
+
+!.gitignore
+!extract.py
+!extractinator_mappings.json
+!fix_what_you_can.txt
