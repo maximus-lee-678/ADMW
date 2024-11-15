@@ -5,6 +5,9 @@
 !.gitignore
 !config/
 !config/*
+!db_generator/
+!db_generator/*
+!db_generator/*/*
 !dmlib/
 !dmlib/*
 !extractinator/
