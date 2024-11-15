@@ -1,0 +1,138 @@
+@startuml
+
+
+entity STAFF_DETAILS {
+    * id : INT <<PK>>
+    --
+    * first_name : VARCHAR(64)
+    + last_name : VARCHAR(128)
+    * email : VARCHAR(128)
+    * password : VARCHAR(128)
+    * telephone : VARCHAR(16)
+    * created_at : DATETIME
+    * modified_at : DATETIME
+}
+
+entity CUSTOMER_DETAILS {
+    * id : INT <<PK>>
+    --
+    * first_name : VARCHAR(64)
+    + last_name : VARCHAR(128)
+    * email : VARCHAR(128)
+    * password : VARCHAR(128)
+    * dob : DATE
+    + telephone : VARCHAR(16)
+    + member_card_sn : CHAR(16)
+    * points : INT
+    * created_at : DATETIME
+    * modified_at : DATETIME
+}
+
+entity CUSTOMER_PURCHASE_INSTANCE {
+    * id : INT <<PK>>
+    --
+    * id_cust : INT <<FK>>
+    * points_gained : DECIMAL(10,2)
+    * points_used : DECIMAL(10,2)
+    * created_at : DATETIME
+}
+
+entity PRODUCT_BRAND {
+    * id : INT <<PK>>
+    --
+    * name : VARCHAR(64)
+    * active : BOOL
+    * created_at : DATETIME
+    * modified_at : DATETIME
+    * modified_by : INT <<FK>>
+}
+
+entity PRODUCT_COUNTRY {
+    * id : INT <<PK>>
+    --
+    * name : VARCHAR(64)
+}
+
+entity PRODUCT_CATEGORY {
+    * id : INT <<PK>>
+    --
+    * name : VARCHAR(64)
+    * image_url : VARCHAR(256)
+    * active : BOOL
+    * created_at : DATETIME
+    * modified_at : DATETIME
+    * modified_by : INT <<FK>>
+}
+
+entity PRODUCT_DETAILS {
+    * id : INT <<PK>>
+    --
+    * id_brand : INT <<FK>>
+    * id_country : INT <<FK>>
+    * id_category_primary : INT <<FK>>
+    * id_category_parent_major : INT <<FK>>
+    + id_category_parent_minor : INT <<FK>>
+    * name : VARCHAR(128)
+    * price : DECIMAL(10,2)
+    * display_unit : VARCHAR(32)
+    + description : VARCHAR(5120)
+    + key_information : VARCHAR(5120)
+    * rating_1 : INT
+    * rating_2 : INT
+    * rating_3 : INT
+    * rating_4 : INT
+    * rating_5 : INT
+    + image_url : VARCHAR(256)
+    * active : BOOL
+    * created_at : DATETIME
+    * modified_at : DATETIME
+    * modified_by : INT <<FK>>
+}
+
+entity PRODUCT_SECONDARY_CATEGORY {
+    * id : INT <<PK>>
+    --
+    * id_prod : INT <<FK>>
+    * id_cat : INT <<FK>>
+}
+
+entity CUSTOMER_PURCHASE_INSTANCE_ITEMS {
+    * id : INT <<PK>>
+    --
+    * order_id : INT <<FK>>
+    * id_prod : INT
+    * quantity : INT
+    * price : DECIMAL(10,2)
+}
+
+entity CUSTOMER_CART_ITEMS {
+    * id : INT <<PK>>
+    --
+    * id_cust : INT <<FK>>
+    * id_prod : INT <<FK>>
+    * quantity : INT
+}
+
+STAFF_DETAILS ||--o{ PRODUCT_BRAND : "modified_by"
+STAFF_DETAILS ||--o{ PRODUCT_CATEGORY : "modified_by"
+STAFF_DETAILS ||--o{ PRODUCT_DETAILS : "modified_by"
+CUSTOMER_DETAILS ||--o{ CUSTOMER_PURCHASE_INSTANCE : "id_cust"
+CUSTOMER_DETAILS ||--o{ CUSTOMER_CART_ITEMS : "id_cust"
+PRODUCT_BRAND ||--o{ PRODUCT_DETAILS : "id_brand"
+PRODUCT_COUNTRY ||--o{ PRODUCT_DETAILS : "id_country"
+PRODUCT_CATEGORY ||--o{ PRODUCT_DETAILS : "id_category_primary"
+PRODUCT_CATEGORY ||--o{ PRODUCT_DETAILS : "id_category_parent_major"
+PRODUCT_CATEGORY ||--o{ PRODUCT_DETAILS : "id_category_parent_minor"
+PRODUCT_DETAILS ||--o{ PRODUCT_SECONDARY_CATEGORY : "id_prod"
+PRODUCT_CATEGORY ||--o{ PRODUCT_SECONDARY_CATEGORY : "id_cat"
+PRODUCT_DETAILS ||--o{ CUSTOMER_PURCHASE_INSTANCE_ITEMS : "id_prod"
+CUSTOMER_PURCHASE_INSTANCE ||--o{ CUSTOMER_PURCHASE_INSTANCE_ITEMS : "order_id"
+PRODUCT_DETAILS ||--o{ CUSTOMER_CART_ITEMS : "id_prod"
+
+legend bottom right
+    | **Bullet** | **Type** |
+    |<#000000>| NOT NULL |
+    |<#84BE84>| NULLABLE |
+endlegend
+
+@enduml

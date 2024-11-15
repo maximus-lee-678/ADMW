@@ -21,6 +21,9 @@
 !lambda/
 !lambda/*
 !lambda/*/*
+!screenshots_diagrams/
+!screenshots_diagrams/*
+!screenshots_diagrams/*/*
 !sfn/
 !sfn/*
 !other_resources.txt
