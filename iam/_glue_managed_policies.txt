@@ -1,0 +1,36 @@
+Policy Name
+Purpose
+
+AmazonS3FullAccess
+Grants access to all S3 buckets. Requires this policy to allow access to temporary buckets created by AWS Glue.
+AWSGlueServiceRole
+Grants access to all Glue services and various EC2, IAM, and CloudWatch services.
+EC2 access is required to allocate IP addresses required by different distributed Glue Workers.
+AWSGlueServiceNotebookRole
+Grants access to additional EC2 resources and also grants codewhisperer permission, which is AWS’s code generator that provides users with code recommendations.
+AWSGlueConsoleFullAccess
+Grants access to additional EC2 resources.
+
+gjb-generate-reconciliation-preliminary
+Policies
+AmazonS3FullAccess
+AWSGlueServiceRole
+AWSGlueConsoleFullAccess
+gjb-load-preliminary-to-final
+Policies
+AmazonS3FullAccess
+AWSGlueServiceRole
+AWSGlueConsoleFullAccess
+gjb-generate-reconciliation-final
+
+Policies
+AmazonS3FullAccess
+AWSGlueServiceRole
+AWSGlueConsoleFullAccess
+
+gjb-dev-nb
+Policies
+AmazonS3FullAccess
+AWSGlueServiceRole
+AWSGlueServiceNotebookRole
+AWSGlueConsoleFullAccess
