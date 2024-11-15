@@ -6,8 +6,8 @@ import sqlite3
 import hashlib
 
 NAME_CONFIG_FILE = "extractinator/extractinator_mappings.json"
-NAME_SQLITE_DB = "extractinator/supermarket_102400.db"
-PROGRESS_BAR_INCREMENT = 10
+NAME_SQLITE_DB = "extractinator/supermarket_1048576.db"
+PROGRESS_BAR_INCREMENT_EVERY = 10000
 
 
 def print_intro():
@@ -69,30 +69,36 @@ def main():
         print(f"Querying table {table_name}, using hash columns {hash_cols}.")
         query = f"SELECT * FROM {table_name};"
 
-        col_names, rows = execute_sqlite_query(query, NAME_SQLITE_DB)
-
         # newline="" is necessary since csvwriter explicitly writes \r\n after each row
         with open(file=f"extractinator/output/{datetime_string_now}/{table_name}~{datetime_string_now}.csv", mode="w", encoding="utf-8", newline="") as f:
+            conn = sqlite3.connect(NAME_SQLITE_DB)
+            cursor = conn.cursor()
+
+            cursor.execute(query)
+            col_names = [description[0] for description in cursor.description]
+
             writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
 
             f.write(f"{",".join(col_names)},admw_file_hash\n")
 
-            total_rows = len(rows)
-            increment = total_rows // PROGRESS_BAR_INCREMENT
-            print("Progress: 0%...", end="")
-
-            for i, row in enumerate(rows):
+            i = 0
+            for row in cursor:
                 row_dict = {col_name: value for col_name, value in zip(col_names, row)}   # map column names to values
                 hash_value = generate_hash(row_dict, hash_cols)
 
                 row_to_write = list(row) + [hash_value]
                 writer.writerow(row_to_write)
 
-                if i > 0 and i % increment == 0:
-                    print(f"{i / total_rows * 100:.0f}%...", end="")
+                if i > 0 and i % PROGRESS_BAR_INCREMENT_EVERY == 0:
+                    print(f"{i}...", end="")
 
-            print("100%!")
-            print(f"Written {len(rows)} rows to extractinator/output/{datetime_string_now}/{table_name}~{datetime_string_now}.csv.")
+                i += 1
+
+            print("Done!")
+            print(f"Written {i} rows to extractinator/output/{datetime_string_now}/{table_name}~{datetime_string_now}.csv.")
+
+            cursor.close()
+            conn.close()
 
     print("All tables have been processed. Exiting.")
 
