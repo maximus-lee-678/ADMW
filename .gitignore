@@ -24,6 +24,8 @@
 !screenshots_diagrams/
 !screenshots_diagrams/*
 !screenshots_diagrams/*/*
+!setup_details/
+!setup_details/*
 !sfn/
 !sfn/*
 !other_resources.txt
